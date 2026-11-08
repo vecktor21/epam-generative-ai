@@ -1,0 +1,1364 @@
+const DATA = {
+  "nodes": [
+    {
+      "id": "Synthetic data",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 7
+    },
+    {
+      "id": "GAN",
+      "type": "term",
+      "explicit": 9,
+      "implicit": 2
+    },
+    {
+      "id": "Foundation model",
+      "type": "term",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "id": "Fine-tuning",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "id": "EHR",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 3
+    },
+    {
+      "id": "PII",
+      "type": "term",
+      "explicit": 2,
+      "implicit": 5
+    },
+    {
+      "id": "Model bias",
+      "type": "term",
+      "explicit": 4,
+      "implicit": 1
+    },
+    {
+      "id": "Explainability",
+      "type": "term",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "id": "Transformer",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "id": "GPT",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "id": "NLP",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 5
+    },
+    {
+      "id": "Data augmentation",
+      "type": "term",
+      "explicit": 3,
+      "implicit": 5
+    },
+    {
+      "id": "De-identification",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "id": "Model drift",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "id": "Human-in-the-loop",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 6
+    },
+    {
+      "id": "Deep learning",
+      "type": "term",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "id": "Prompt",
+      "type": "term",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "id": "Chatbot",
+      "type": "term",
+      "explicit": 4,
+      "implicit": 2
+    },
+    {
+      "id": "Virtual assistant",
+      "type": "term",
+      "explicit": 9,
+      "implicit": 7
+    },
+    {
+      "id": "Anomaly detection",
+      "type": "term",
+      "explicit": 3,
+      "implicit": 2
+    },
+    {
+      "id": "Healthcare",
+      "type": "section",
+      "explicit": 0,
+      "implicit": 0
+    },
+    {
+      "id": "Finance",
+      "type": "section",
+      "explicit": 0,
+      "implicit": 0
+    },
+    {
+      "id": "Cyber Security",
+      "type": "section",
+      "explicit": 0,
+      "implicit": 0
+    },
+    {
+      "id": "Virtual Assistants",
+      "type": "section",
+      "explicit": 0,
+      "implicit": 0
+    },
+    {
+      "id": "Content Creation",
+      "type": "section",
+      "explicit": 0,
+      "implicit": 0
+    }
+  ],
+  "links": [
+    {
+      "source": "Synthetic data",
+      "target": "Healthcare",
+      "explicit": 1,
+      "implicit": 7
+    },
+    {
+      "source": "GAN",
+      "target": "Healthcare",
+      "explicit": 9,
+      "implicit": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "Healthcare",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "Healthcare",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "source": "EHR",
+      "target": "Healthcare",
+      "explicit": 1,
+      "implicit": 3
+    },
+    {
+      "source": "PII",
+      "target": "Healthcare",
+      "explicit": 2,
+      "implicit": 5
+    },
+    {
+      "source": "Model bias",
+      "target": "Healthcare",
+      "explicit": 3,
+      "implicit": 1
+    },
+    {
+      "source": "Explainability",
+      "target": "Healthcare",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "source": "NLP",
+      "target": "Healthcare",
+      "explicit": 0,
+      "implicit": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Healthcare",
+      "explicit": 2,
+      "implicit": 4
+    },
+    {
+      "source": "De-identification",
+      "target": "Healthcare",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Healthcare",
+      "explicit": 0,
+      "implicit": 2
+    },
+    {
+      "source": "Anomaly detection",
+      "target": "Healthcare",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "Transformer",
+      "target": "Finance",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "GPT",
+      "target": "Finance",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "source": "NLP",
+      "target": "Finance",
+      "explicit": 0,
+      "implicit": 2
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Finance",
+      "explicit": 0,
+      "implicit": 1
+    },
+    {
+      "source": "Deep learning",
+      "target": "Finance",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "Prompt",
+      "target": "Finance",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "source": "Chatbot",
+      "target": "Finance",
+      "explicit": 3,
+      "implicit": 2
+    },
+    {
+      "source": "GAN",
+      "target": "Cyber Security",
+      "explicit": 0,
+      "implicit": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Cyber Security",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "Explainability",
+      "target": "Cyber Security",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "NLP",
+      "target": "Cyber Security",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Cyber Security",
+      "explicit": 0,
+      "implicit": 1
+    },
+    {
+      "source": "Model drift",
+      "target": "Cyber Security",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Cyber Security",
+      "explicit": 1,
+      "implicit": 3
+    },
+    {
+      "source": "Deep learning",
+      "target": "Cyber Security",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "source": "Prompt",
+      "target": "Cyber Security",
+      "explicit": 0,
+      "implicit": 1
+    },
+    {
+      "source": "Virtual assistant",
+      "target": "Cyber Security",
+      "explicit": 4,
+      "implicit": 0
+    },
+    {
+      "source": "Anomaly detection",
+      "target": "Cyber Security",
+      "explicit": 2,
+      "implicit": 2
+    },
+    {
+      "source": "NLP",
+      "target": "Virtual Assistants",
+      "explicit": 0,
+      "implicit": 1
+    },
+    {
+      "source": "Chatbot",
+      "target": "Virtual Assistants",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "Virtual assistant",
+      "target": "Virtual Assistants",
+      "explicit": 3,
+      "implicit": 7
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Content Creation",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "source": "Synthetic data",
+      "target": "GAN",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Foundation model",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Fine-tuning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "EHR",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "PII",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Model bias",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Synthetic data",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Foundation model",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Fine-tuning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "EHR",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "PII",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Model bias",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "GAN",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "GAN",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "GAN",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "GAN",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Model drift",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "GAN",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GAN",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Foundation model",
+      "target": "Fine-tuning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "EHR",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "PII",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "Model bias",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Foundation model",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "EHR",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "PII",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "Model bias",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Fine-tuning",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "PII",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "Model bias",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "EHR",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "Model bias",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "PII",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Explainability",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Model bias",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Model bias",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Model bias",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Model drift",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Model bias",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model bias",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Explainability",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Explainability",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Explainability",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Explainability",
+      "target": "Model drift",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Explainability",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Explainability",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Explainability",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Explainability",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Explainability",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Transformer",
+      "target": "GPT",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Transformer",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Transformer",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Transformer",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Transformer",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Transformer",
+      "target": "Chatbot",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GPT",
+      "target": "NLP",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GPT",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GPT",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GPT",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "GPT",
+      "target": "Chatbot",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "NLP",
+      "target": "Data augmentation",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "NLP",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "NLP",
+      "target": "Model drift",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "NLP",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 3
+    },
+    {
+      "source": "NLP",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "NLP",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "NLP",
+      "target": "Chatbot",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "NLP",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "NLP",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Data augmentation",
+      "target": "De-identification",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Model drift",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Data augmentation",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "De-identification",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "De-identification",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model drift",
+      "target": "Human-in-the-loop",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model drift",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model drift",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model drift",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Model drift",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Deep learning",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Chatbot",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Human-in-the-loop",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Deep learning",
+      "target": "Prompt",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 2
+    },
+    {
+      "source": "Deep learning",
+      "target": "Chatbot",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Deep learning",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Deep learning",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Prompt",
+      "target": "Chatbot",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Prompt",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Prompt",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Chatbot",
+      "target": "Virtual assistant",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    },
+    {
+      "source": "Virtual assistant",
+      "target": "Anomaly detection",
+      "explicit": 0,
+      "implicit": 0,
+      "cooc": 1
+    }
+  ],
+  "stats": [
+    {
+      "term": "Synthetic data",
+      "explicit": 1,
+      "implicit": 7
+    },
+    {
+      "term": "GAN",
+      "explicit": 9,
+      "implicit": 2
+    },
+    {
+      "term": "Foundation model",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "term": "Fine-tuning",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "term": "EHR",
+      "explicit": 1,
+      "implicit": 3
+    },
+    {
+      "term": "PII",
+      "explicit": 2,
+      "implicit": 5
+    },
+    {
+      "term": "Model bias",
+      "explicit": 4,
+      "implicit": 1
+    },
+    {
+      "term": "Explainability",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "term": "Transformer",
+      "explicit": 1,
+      "implicit": 0
+    },
+    {
+      "term": "GPT",
+      "explicit": 1,
+      "implicit": 1
+    },
+    {
+      "term": "NLP",
+      "explicit": 1,
+      "implicit": 5
+    },
+    {
+      "term": "Data augmentation",
+      "explicit": 3,
+      "implicit": 5
+    },
+    {
+      "term": "De-identification",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "term": "Model drift",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "term": "Human-in-the-loop",
+      "explicit": 1,
+      "implicit": 6
+    },
+    {
+      "term": "Deep learning",
+      "explicit": 2,
+      "implicit": 1
+    },
+    {
+      "term": "Prompt",
+      "explicit": 1,
+      "implicit": 2
+    },
+    {
+      "term": "Chatbot",
+      "explicit": 4,
+      "implicit": 2
+    },
+    {
+      "term": "Virtual assistant",
+      "explicit": 9,
+      "implicit": 7
+    },
+    {
+      "term": "Anomaly detection",
+      "explicit": 3,
+      "implicit": 2
+    }
+  ]
+};

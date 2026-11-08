@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vocabulary – Report Usage Relationship Graph</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #171e2e; --text: #e8ecf4; --muted: #93a0b8;
+    --term: #4da3ff; --section: #ffb454; --cooc: #6ee7b7;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); }
+  header { padding: 18px 28px 6px; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  header p { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 1050px; }
+  .controls { display: flex; gap: 14px; align-items: center; padding: 12px 28px; flex-wrap: wrap; }
+  .btn { background: var(--panel); color: var(--text); border: 1px solid #2a3550; border-radius: 8px;
+         padding: 7px 16px; font-size: 13.5px; cursor: pointer; }
+  .btn.active { background: #2a4a80; border-color: var(--term); }
+  label.chk { font-size: 13.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .legend { display: flex; gap: 22px; padding: 0 28px 10px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .line { width: 22px; height: 0; border-top: 3px solid; display: inline-block; }
+  main { display: flex; flex-wrap: wrap; padding: 0 28px 28px; gap: 22px; align-items: flex-start; }
+  #graph { background: var(--panel); border: 1px solid #2a3550; border-radius: 12px; flex: 1 1 620px; width: 100%; height: auto; min-width: 0; }
+  #tooltip { position: fixed; pointer-events: none; background: #101828; border: 1px solid #3b4a6b;
+             padding: 9px 12px; border-radius: 8px; font-size: 13px; display: none; z-index: 10; max-width: 300px; }
+  #tooltip b { color: var(--term); }
+  #tooltip .sec { color: var(--section); }
+  aside { width: 380px; flex: 1 1 340px; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid #2a3550;
+          border-radius: 12px; overflow: hidden; font-size: 13px; }
+  th, td { padding: 7px 12px; text-align: right; border-bottom: 1px solid #232d45; }
+  th { background: #1c2438; color: var(--muted); font-weight: 600; }
+  th:first-child, td:first-child { text-align: left; }
+  td.e { color: var(--term); } td.i { color: var(--cooc); }
+  tr:hover td { background: #1d2740; }
+  caption { caption-side: top; text-align: left; padding: 10px 12px 4px; color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>GenAI Vocabulary – Usage Relationship Graph</h1>
+  <p>Relationships between the 20 vocabulary terms (<code>vocabulary.md</code>) and the five report sections
+     (<code>research.md</code>). <b>Explicit</b> frequency = the term itself (or a direct spelling variant) appears
+     in the section. <b>Implicit</b> frequency = the concept is used through a synonym or related phrase without
+     naming the term. Edge thickness and node size reflect the frequency in the selected mode. Statistics are
+     computed by <code>graph_stats.py</code> (regex matching over the report text, exported to
+     <code>graph_data.js</code>). Dashed green edges are term–term co-occurrence (both terms used in the same
+     section; weight = number of shared sections). Hover for exact numbers, drag nodes to rearrange.</p>
+</header>
+
+<div class="controls">
+  <button class="btn active" id="m-total">Total usage</button>
+  <button class="btn" id="m-explicit">Explicit only</button>
+  <button class="btn" id="m-implicit">Implicit only</button>
+  <label class="chk"><input type="checkbox" id="show-cooc" checked> show co-occurrence edges</label>
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:var(--term)"></span>vocabulary term (size = frequency in mode)</span>
+  <span><span class="dot" style="background:var(--section)"></span>report section</span>
+  <span><span class="line" style="border-color:var(--term)"></span>term → section usage edge</span>
+  <span><span class="line" style="border-color:var(--cooc); border-top-style:dashed"></span>term ↔ term co-occurrence</span>
+</div>
+
+<main>
+  <svg id="graph" viewBox="0 0 980 780" width="980" height="780"></svg>
+  <aside>
+    <table>
+      <caption>Usage frequencies of each vocabulary term across the whole report</caption>
+      <thead><tr><th>Term</th><th>Explicit</th><th>Implicit</th><th>Total</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </aside>
+</main>
+
+<div id="tooltip"></div>
+<script src="graph_data.js"></script>
+<script>
+const W = 980, H = 780;
+const svg = document.getElementById("graph");
+const tooltip = document.getElementById("tooltip");
+const CSS = getComputedStyle(document.documentElement);
+const C_TERM = CSS.getPropertyValue("--term").trim();
+const C_SEC  = CSS.getPropertyValue("--section").trim();
+const C_COC  = CSS.getPropertyValue("--cooc").trim();
+
+let mode = "total"; // "total" | "explicit" | "implicit"
+
+// ----- data prep -----
+const nodes = DATA.nodes.map(n => ({ ...n }));
+const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+const links = DATA.links.map(l => ({
+  ...l,
+  source: byId[l.source],
+  target: byId[l.target],
+  isCooc: l.cooc !== undefined,
+}));
+const usageLinks = links.filter(l => !l.isCooc);
+const coocLinks  = links.filter(l => l.isCooc);
+
+const weight = l => mode === "total" ? l.explicit + l.implicit : l[mode];
+const nodeValue = n => n.type === "term" ? (mode === "total" ? n.explicit + n.implicit : n[mode]) : 0;
+let maxNode = 1, maxEdge = 1;
+function recomputeMaxima() {
+  maxNode = Math.max(...nodes.map(nodeValue), 1);
+  maxEdge = Math.max(...usageLinks.map(weight), 1);
+}
+recomputeMaxima();
+const radius = n => n.type === "section" ? 24 : 10 + 22 * (nodeValue(n) / maxNode);
+
+// ----- force simulation -----
+nodes.forEach((n, i) => {
+  const a = (i / nodes.length) * 2 * Math.PI;
+  n.x = W / 2 + Math.cos(a) * (W / 3.2) * Math.random();
+  n.y = H / 2 + Math.sin(a) * (H / 3.2) * Math.random();
+  n.vx = 0; n.vy = 0;
+});
+
+function tick() {
+  // repulsion (all pairs)
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let d2 = dx * dx + dy * dy || 1;
+      if (d2 > 250000) continue;
+      const f = 2600 / d2;
+      const d = Math.sqrt(d2);
+      dx /= d; dy /= d;
+      a.vx -= f * dx; a.vy -= f * dy;
+      b.vx += f * dx; b.vy += f * dy;
+    }
+  }
+  // springs on usage edges
+  for (const l of usageLinks) {
+    const k = 0.012 + 0.05 * (weight(l) / maxEdge);
+    const rest = l.target.type === "section" ? 160 : 190;
+    let dx = l.target.x - l.source.x, dy = l.target.y - l.source.y;
+    const d = Math.sqrt(dx * dx + dy * dy) || 1;
+    const f = k * (d - rest);
+    dx /= d; dy /= d;
+    l.source.vx += f * dx; l.source.vy += f * dy;
+    l.target.vx -= f * dx; l.target.vy -= f * dy;
+  }
+  // weaker springs on co-occurrence edges
+  for (const l of coocLinks) {
+    const k = 0.004 + 0.008 * l.cooc;
+    let dx = l.target.x - l.source.x, dy = l.target.y - l.source.y;
+    const d = Math.sqrt(dx * dx + dy * dy) || 1;
+    const f = k * (d - 270);
+    dx /= d; dy /= d;
+    l.source.vx += f * dx; l.source.vy += f * dy;
+    l.target.vx -= f * dx; l.target.vy -= f * dy;
+  }
+  // center gravity + integrate
+  for (const n of nodes) {
+    n.vx += (W / 2 - n.x) * 0.004;
+    n.vy += (H / 2 - n.y) * 0.004;
+    if (n.fx !== undefined) { n.x = n.fx; n.y = n.fy; n.vx = n.vy = 0; continue; }
+    n.vx *= 0.85; n.vy *= 0.85;
+    n.x += Math.max(-12, Math.min(12, n.vx));
+    n.y += Math.max(-12, Math.min(12, n.vy));
+    n.x = Math.max(radius(n) + 4, Math.min(W - radius(n) - 4, n.x));
+    n.y = Math.max(radius(n) + 4, Math.min(H - radius(n) - 4, n.y));
+  }
+}
+
+// ----- rendering -----
+const SVGNS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs) => {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+};
+
+const gEdges = el("g", {}), gCooc = el("g", {}), gNodes = el("g", {});
+svg.appendChild(gCooc); svg.appendChild(gEdges); svg.appendChild(gNodes);
+
+function bindTooltip(e, html) {
+  e.addEventListener("mousemove", ev => {
+    tooltip.style.display = "block";
+    tooltip.style.left = (ev.clientX + 14) + "px";
+    tooltip.style.top = (ev.clientY + 14) + "px";
+    tooltip.innerHTML = html;
+  });
+  e.addEventListener("mouseleave", () => tooltip.style.display = "none");
+}
+
+const edgeEls = usageLinks.map(l => {
+  const e = el("line", { stroke: C_TERM, "stroke-linecap": "round" });
+  bindTooltip(e, `<b>${l.source.id}</b> → <span class="sec">${l.target.id}</span><br>` +
+    `explicit: ${l.explicit} &nbsp; implicit: ${l.implicit} &nbsp; total: ${l.explicit + l.implicit}`);
+  gEdges.appendChild(e);
+  return e;
+});
+
+const coocEls = coocLinks.map(l => {
+  const e = el("line", { stroke: C_COC, "stroke-dasharray": "5 5" });
+  bindTooltip(e, `<b>${l.source.id}</b> ↔ <b>${l.target.id}</b><br>` +
+    `co-occurrence weight: ${l.cooc} shared section${l.cooc > 1 ? "s" : ""}`);
+  gCooc.appendChild(e);
+  return e;
+});
+
+const nodeEls = nodes.map(n => {
+  const g = el("g", { cursor: "grab" });
+  const circle = el("circle", {
+    r: radius(n),
+    fill: n.type === "section" ? C_SEC : C_TERM,
+    "fill-opacity": n.type === "section" ? 0.92 : 0.75,
+    stroke: n.type === "section" ? "#8a5a1a" : "#1c5aa0",
+    "stroke-width": 2,
+  });
+  const isSec = n.type === "section";
+  const label = el("text", {
+    "text-anchor": "middle",
+    "font-size": isSec ? 14 : 11.5,
+    "font-weight": isSec ? 700 : 400,
+    fill: isSec ? C_SEC : "#eaf2ff",
+    "pointer-events": "none",
+  });
+  label.textContent = n.id;
+  g.appendChild(circle);
+  g.appendChild(label);
+  bindTooltip(g, isSec
+    ? `<span class="sec"><b>${n.id}</b> (report section)</span><br>` +
+      `${usageLinks.filter(l => l.target === n).length} vocabulary terms used in this section`
+    : `<b>${n.id}</b> (vocabulary term)<br>` +
+      `explicit: ${n.explicit} &nbsp; implicit: ${n.implicit} &nbsp; total: ${n.explicit + n.implicit}`);
+
+  // drag
+  let dragging = false;
+  g.addEventListener("mousedown", ev => {
+    dragging = true; n.fx = n.x; n.fy = n.y; g.setAttribute("cursor", "grabbing");
+    ev.preventDefault();
+  });
+  window.addEventListener("mousemove", ev => {
+    if (!dragging) return;
+    const r = svg.getBoundingClientRect();
+    n.fx = (ev.clientX - r.left) * (W / r.width);
+    n.fy = (ev.clientY - r.top) * (H / r.height);
+  });
+  window.addEventListener("mouseup", () => {
+    if (!dragging) return;
+    dragging = false; delete n.fx; delete n.fy; g.setAttribute("cursor", "grab");
+  });
+  gNodes.appendChild(g);
+  n.el = { g, circle, label };
+  return g;
+});
+
+function render() {
+  usageLinks.forEach((l, i) => {
+    const e = edgeEls[i];
+    e.setAttribute("x1", l.source.x); e.setAttribute("y1", l.source.y);
+    e.setAttribute("x2", l.target.x); e.setAttribute("y2", l.target.y);
+    const w = weight(l);
+    e.setAttribute("stroke-width", w > 0 ? 0.8 + 5.5 * (w / maxEdge) : 0.25);
+    e.setAttribute("stroke-opacity", w > 0 ? 0.75 : 0.18);
+  });
+  coocLinks.forEach((l, i) => {
+    const e = coocEls[i];
+    e.setAttribute("x1", l.source.x); e.setAttribute("y1", l.source.y);
+    e.setAttribute("x2", l.target.x); e.setAttribute("y2", l.target.y);
+    e.setAttribute("stroke-width", 0.6 + 1.2 * l.cooc);
+    e.setAttribute("stroke-opacity", 0.22 + 0.1 * l.cooc);
+    e.style.display = document.getElementById("show-cooc").checked ? "" : "none";
+  });
+  nodes.forEach(n => {
+    n.el.g.setAttribute("transform", `translate(${n.x},${n.y})`);
+    n.el.circle.setAttribute("r", radius(n));
+    // terms: label above the node; sections: label below the node
+    n.el.label.setAttribute("dy", n.type === "section" ? radius(n) + 17 : -radius(n) - 5);
+  });
+}
+
+// pre-run simulation to settle layout
+for (let i = 0; i < 400; i++) tick();
+(function animate() { tick(); render(); requestAnimationFrame(animate); })();
+
+// ----- stats table -----
+const tbody = document.getElementById("tbody");
+for (const s of [...DATA.stats].sort((a, b) => (b.explicit + b.implicit) - (a.explicit + a.implicit))) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td>${s.term}</td><td class="e">${s.explicit}</td><td class="i">${s.implicit}</td>` +
+                 `<td><b>${s.explicit + s.implicit}</b></td>`;
+  tbody.appendChild(tr);
+}
+
+// ----- mode toggle -----
+function setMode(m) {
+  mode = m;
+  recomputeMaxima();
+  for (const [id, val] of [["m-total", "total"], ["m-explicit", "explicit"], ["m-implicit", "implicit"]]) {
+    document.getElementById(id).classList.toggle("active", val === m);
+  }
+}
+document.getElementById("m-total").addEventListener("click", () => setMode("total"));
+document.getElementById("m-explicit").addEventListener("click", () => setMode("explicit"));
+document.getElementById("m-implicit").addEventListener("click", () => setMode("implicit"));
+</script>
+</body>
+</html>
